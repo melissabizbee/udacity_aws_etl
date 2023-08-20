@@ -4,7 +4,7 @@ import psycopg2
 
 # CONFIG
 config = configparser.ConfigParser()
-config.read("/Users/melissabee/Documents/GitHub/DataWarehouseProject/dwh_project/dwh.cfg")
+config.read("dwh.cfg")
 
 KEY=config.get('AWS','key')
 SECRET= config.get('AWS','secret')
@@ -90,9 +90,9 @@ songplay_table_create = ("""
    CREATE TABLE IF NOT EXISTS songplays (
                 songplay_id INTEGER IDENTITY(0,1)   NOT NULL SORTKEY,
                 start_time  TIMESTAMP               NOT NULL,
-                user_id     VARCHAR(50)             NOT NULL DISTKEY,
+                user_id     INTEGER            NOT NULL DISTKEY,
                 level       VARCHAR(10)             NOT NULL,
-                song_id     VARCHAR(40)             NOT NULL,
+                song_id     VARCHAR(50)             NOT NULL,
                 artist_id   VARCHAR(50)             NOT NULL,
                 session_id  VARCHAR(50)             NOT NULL,
                 location    VARCHAR(100)            NULL,

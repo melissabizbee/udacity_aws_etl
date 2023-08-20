@@ -8,7 +8,7 @@ from sql_queries import create_table_queries, drop_table_queries
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
-
+# add schema and set search dist ## 3.1 Create tables (with a distribution strategy) in the `dist` schema
 
 def drop_tables(cur, conn):
     for query in drop_table_queries:
