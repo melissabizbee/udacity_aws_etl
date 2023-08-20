@@ -32,7 +32,7 @@ def create_tables(cur, conn):
 
 def main():
     config = configparser.ConfigParser()
-    config.read("/Users/melissabee/Documents/GitHub/DataWarehouseProject/dwh_project/dwh.cfg")
+    config.read("dwh.cfg")
 
     try:
         conn = psycopg2.connect(
