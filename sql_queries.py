@@ -1,3 +1,11 @@
+"""
+This module contains configuration and SQL queries for setting up and populating tables within a Redshift cluster.
+
+The module reads configuration details, establishes a connection to the cluster, 
+and provides SQL queries for creating, dropping, copying from S3, and inserting into tables.
+"""
+
+
 import configparser
 import boto3
 import psycopg2
@@ -35,54 +43,54 @@ conn = psycopg2.connect(
 cur = conn.cursor()
 
 
-# DROP TABLES
+# DROP and CASCADE tables to remove any dependancies also
 
-staging_events_table_drop = "DROP TABLE IF EXISTS staging_events;"
-staging_songs_table_drop = "DROP TABLE IF EXISTS staging_songs;"
-songplay_table_drop = "DROP TABLE IF EXISTS songplays;"
-user_table_drop = "DROP TABLE IF EXISTS users;"
-song_table_drop = "DROP TABLE IF EXISTS songs;"
-artist_table_drop = "DROP TABLE IF EXISTS artists;"
-time_table_drop = "DROP TABLE IF EXISTS time;"
+staging_events_table_drop = "DROP TABLE IF EXISTS staging_events CASCADE;"
+staging_songs_table_drop = "DROP TABLE IF EXISTS staging_songs CASCADE;"
+songplay_table_drop = "DROP TABLE IF EXISTS songplays CASCADE;"
+user_table_drop = "DROP TABLE IF EXISTS users CASCADE;"
+song_table_drop = "DROP TABLE IF EXISTS songs CASCADE;"
+artist_table_drop = "DROP TABLE IF EXISTS artists CASCADE;"
+time_table_drop = "DROP TABLE IF EXISTS time CASCADE;"
+
 
 # CREATE TABLES
 
 staging_events_table_create = ("""
   CREATE TABLE IF NOT EXISTS staging_events (
-                event_id    BIGINT IDENTITY(0,1)    NOT NULL,
-                artist      VARCHAR                 NULL,
-                auth        VARCHAR                 NULL,
-                firstName   VARCHAR                 NULL,
-                gender      VARCHAR                 NULL,
-                itemInSession VARCHAR               NULL,
-                lastName    VARCHAR                 NULL,
-                length      VARCHAR                 NULL,
-                level       VARCHAR                 NULL,
-                location    VARCHAR                 NULL,
-                method      VARCHAR                 NULL,
-                page        VARCHAR                 NULL,
-                registration VARCHAR                NULL,
-                sessionId   INTEGER                 NOT NULL SORTKEY DISTKEY,
-                song        VARCHAR                 NULL,
-                status      INTEGER                 NULL,
-                ts          BIGINT                  NOT NULL,
-                userAgent   VARCHAR                 NULL,
-                userId      INTEGER                 NULL
+                artist      VARCHAR                 ,
+                auth        VARCHAR                 ,
+                firstName   VARCHAR                 ,
+                gender      VARCHAR                 ,
+                itemInSession VARCHAR               ,
+                lastName    VARCHAR                 ,
+                length      VARCHAR                 ,
+                level       VARCHAR                 ,
+                location    VARCHAR                 ,
+                method      VARCHAR                 ,
+                page        VARCHAR                 ,
+                registration VARCHAR                ,
+                sessionId   INTEGER                 SORTKEY DISTKEY,
+                song        VARCHAR                 ,
+                status      INTEGER                 ,
+                ts          BIGINT                  ,
+                userAgent   VARCHAR                 ,
+                userId      INTEGER                 
     );
 """)
 
 staging_songs_table_create = ("""
  CREATE TABLE IF NOT EXISTS staging_songs (
-                num_songs           INTEGER         NULL,
-                artist_id           VARCHAR         NOT NULL SORTKEY DISTKEY,
-                artist_latitude     VARCHAR         NULL,
-                artist_longitude    VARCHAR         NULL,
-                artist_location     VARCHAR(500)   NULL,
-                artist_name         VARCHAR(500)   NULL,
-                song_id             VARCHAR         NOT NULL,
-                title               VARCHAR(500)   NULL,
-                duration            DECIMAL(9)      NULL,
-                year                INTEGER         NULL
+                num_songs           INTEGER         ,
+                artist_id           VARCHAR          SORTKEY DISTKEY,
+                artist_latitude     DECIMAL(9)      ,
+                artist_longitude    DECIMAL(9)      ,
+                artist_location     VARCHAR(500)   ,
+                artist_name         VARCHAR(500)   ,
+                song_id             VARCHAR        ,
+                title               VARCHAR(500)   ,
+                duration            DECIMAL(9)      ,
+                year                INTEGER         
     );
 """)
 
